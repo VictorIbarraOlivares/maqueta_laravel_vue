@@ -8,18 +8,23 @@
 ==========================================================================================*/
 
 
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/es';
+import App from './App.vue';
+
+Vue.use(ElementUI, { locale });
 
 // Vuesax Component Framework
-import Vuesax from 'vuesax'
+import Vuesax from 'vuesax';
 
-Vue.use(Vuesax)
+Vue.use(Vuesax);
 
 
 // axios
-import axios from './axios.js'
-Vue.prototype.$http = axios
+import axios from './axios.js';
+Vue.prototype.$http = axios;
 
 // Theme Configurations
 import '../themeConfig.js'
