@@ -1,15 +1,15 @@
 <template>
     <div>
         <h4>Formulario</h4>
-        <el-form ref="form" :model="form" label-position="top">
+        <el-form ref="form" :model="form" label-position="top" :rules="rules">
             <el-row :gutter="20">
 
                 <el-col :span="16">
-                    <vx-card class="mt-4" >
+                    <el-card class="mt-4" >
 
                         <el-row :gutter="20">
                             <el-col :span="6">
-                                <el-form-item label="Fecha Documento">
+                                <el-form-item label="Fecha Documento" prop="fecha_documento">
                                     <el-date-picker 
                                         type="date" 
                                         v-model="form.fecha_documento" 
@@ -31,7 +31,7 @@
 
                         <el-row :gutter="20">
                             <el-col :span="6">
-                                <el-form-item label="Tipo Documento">
+                                <el-form-item label="Tipo Documento" prop="tipo_documento">
                                     <el-select v-model="form.tipo_documento" placeholder="Por favor seleccione">
                                         <el-option
                                             v-for="item in options"
@@ -44,20 +44,20 @@
                             </el-col>
 
                             <el-col :span="6">
-                                <el-form-item label="N° Documento">
+                                <el-form-item label="N° Documento" prop="numero_documento">
                                     <el-input v-model="form.numero_documento" ></el-input>
                                 </el-form-item>
                             </el-col>
 
                             <el-col :span="6">
-                                <el-form-item label="Orden de Compra">
+                                <el-form-item label="Orden de Compra" prop="orden_de_compra">
                                     <el-input v-model="form.orden_de_compra" ></el-input>
                                 </el-form-item>
                             </el-col>
 
                             <el-col :span="6">
-                                <el-form-item label="Monto Total">
-                                    <el-input v-model="form.monto_total" placeholder="IVA incluido" ></el-input>
+                                <el-form-item label="Monto Total" prop="monto_total">
+                                    <el-input v-model="form.monto_total" placeholder="IVA incluido"  ></el-input>
                                 </el-form-item>
                             </el-col>
 
@@ -71,11 +71,11 @@
                             </el-col>
                         </el-row>
 
-                    </vx-card>
+                    </el-card>
                 </el-col>
 
                 <el-col :span="8">
-                    <vx-card class="mt-4" >
+                    <el-card class="mt-4" >
 
                         <el-row >
                             <el-col :span="12">
@@ -122,261 +122,52 @@
                             </el-col>
                         </el-row>
 
-                    </vx-card>
+                    </el-card>
+                </el-col>
+
+            </el-row>
+
+            <el-row :gutter="20">
+
+                <el-col :span="16">
+                    <el-card class="mt-4" >
+                        <div slot="header" class="clearfix">
+                            <span>Adjuntar archivos de respaldo de recepción original, que incluya al menos una identificación del responsable</span>
+                        </div>
+
+                        <el-row :gutter="20">
+                            <el-col :span="24">
+
+                                <el-upload
+                                    class="upload-demo"
+                                    action="/test"
+                                    :auto-upload="false"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    accept=".pdf"
+                                    multiple
+                                    :limit="3"
+                                    :on-exceed="handleExceed"
+                                    :file-list="fileList" >
+                                    <el-button size="small" type="primary">Clic para subir archivo</el-button>
+                                    <div slot="tip" class="el-upload__tip">Solo archivos pdf con un tamaño menor de 500kb. Máximo 3 archivos.</div>
+                                </el-upload>
+
+                            </el-col>
+                        </el-row>
+
+                    </el-card>
+                </el-col>
+
+                <el-col :span="8">
+                    <el-form-item class="mt-4" >
+                        <el-button type="primary" @click.prevent="submitForm('form')" ><i class="el-icon-s-claim"></i> Guardar</el-button>
+                    </el-form-item>
                 </el-col>
 
             </el-row>
         </el-form>
 
-        <!-- <div class="vx-col" vs-w="8">
-            <vx-card class="mt-2" >
-
-                <vs-row>
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-
-                        <el-select v-model="form.tipo_documento" placeholder="Tipo Documento">
-                            <el-option
-                                
-                                name="Tipo Documento"
-                                v-validate="'required'"
-
-                                v-for="item in options"
-                                :key="item.value"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <span class="text-danger text-sm" v-show="errors.has('Tipo Documento')">{{ errors.first('Tipo Documento') }}</span>
-
-                    </vs-col>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="N° Documento" 
-                            name="N° Documento"
-                            v-model="form.numero_documento" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('N° Documento')">{{ errors.first('N° Documento') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Orden de Compra" 
-                            name="Orden de Compra"
-                            v-model="form.orden_de_compra" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Orden de Compra')">{{ errors.first('Orden de Compra') }}</span>
-                    </vs-col>
-
-                    <vs-col  vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Monto Total" 
-                            name="Monto Total"
-                            icon-pack="feather" icon="icon-dollar-sign" icon-no-border 
-                            placeholder="IVA incluido"
-                            v-model="form.monto_total" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Monto Total')">{{ errors.first('Monto Total') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Fecha Documento"
-                            name="Fecha Documento" 
-                            type="date"
-                            v-model="form.fecha_documento" 
-                            :value="form.fecha_documento"
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Fecha Documento')">{{ errors.first('Fecha Documento') }}</span>
-                    </vs-col>
-
-                </vs-row>
-
-                <vs-row>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full"
-                            label="Fecha de Recepción" 
-                            type="date"
-                            v-model="form.fecha_recepcion" 
-                            :value="form.fecha_recepcion" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Fecha de Recepción')">{{ errors.first('Fecha de Recepción') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="3" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Centro de Salud"
-                            name="Centro de Salud"
-                            v-model="form.centro_salud" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Centro de Salud')">{{ errors.first('Centro de Salud') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="3" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Responsable de Recepción"
-                            name="Responsable de Recepción" 
-                            v-model="form.responsable_recepcion" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Responsable de Recepción')">{{ errors.first('Responsable de Recepción') }}</span>
-                    </vs-col>
-
-                </vs-row>
-
-                <vs-alert active="true" color="success" style="text-align: justify;" class="mb-3">
-                    Adjuntar recepción original, que incluya al menos una identifiación del responsable de recepción
-                </vs-alert>
-
-                <vs-row>
-                    <vs-col vs-w="12" class="p-4 sm:p-2">
-                        <vs-textarea 
-                            counter="250" 
-                            label="Observación" 
-                            maxlength="250" 
-                            name="Observación" 
-                            v-validate="'max:250'"
-                            v-model="form.observacion" />
-                        <span class="text-danger text-sm" v-show="errors.has('Observación')">{{ errors.first('Observación') }}</span>
-                    </vs-col>
-                </vs-row>
-
-
-            </vx-card>
-
-            <vs-button type="filled" @click.prevent="submitForm" class="mt-5 block">Guardar</vs-button>
-        </div>
-
-        <div class="vx-col w-full mb-base">
-            <vx-card class="mt-2">
-
-                <vs-row>
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-
-                        <el-select v-model="form.tipo_documento" placeholder="Tipo Documento">
-                            <el-option
-                                
-                                name="Tipo Documento"
-                                v-validate="'required'"
-
-                                v-for="item in options"
-                                :key="item.value"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <span class="text-danger text-sm" v-show="errors.has('Tipo Documento')">{{ errors.first('Tipo Documento') }}</span>
-
-                    </vs-col>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="N° Documento" 
-                            name="N° Documento"
-                            v-model="form.numero_documento" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('N° Documento')">{{ errors.first('N° Documento') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Orden de Compra" 
-                            name="Orden de Compra"
-                            v-model="form.orden_de_compra" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Orden de Compra')">{{ errors.first('Orden de Compra') }}</span>
-                    </vs-col>
-
-                    <vs-col  vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Monto Total" 
-                            name="Monto Total"
-                            icon-pack="feather" icon="icon-dollar-sign" icon-no-border 
-                            placeholder="IVA incluido"
-                            v-model="form.monto_total" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Monto Total')">{{ errors.first('Monto Total') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Fecha Documento"
-                            name="Fecha Documento" 
-                            type="date"
-                            v-model="form.fecha_documento" 
-                            :value="form.fecha_documento"
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Fecha Documento')">{{ errors.first('Fecha Documento') }}</span>
-                    </vs-col>
-
-                </vs-row>
-
-                <vs-row>
-
-                    <vs-col vs-w="2" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full"
-                            label="Fecha de Recepción" 
-                            type="date"
-                            v-model="form.fecha_recepcion" 
-                            :value="form.fecha_recepcion" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Fecha de Recepción')">{{ errors.first('Fecha de Recepción') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="3" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Centro de Salud"
-                            name="Centro de Salud"
-                            v-model="form.centro_salud" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Centro de Salud')">{{ errors.first('Centro de Salud') }}</span>
-                    </vs-col>
-
-                    <vs-col vs-w="3" class="p-4 sm:p-2">
-                        <vs-input 
-                            class="w-full" 
-                            label="Responsable de Recepción"
-                            name="Responsable de Recepción" 
-                            v-model="form.responsable_recepcion" 
-                            v-validate="'required'" />
-                            <span class="text-danger text-sm" v-show="errors.has('Responsable de Recepción')">{{ errors.first('Responsable de Recepción') }}</span>
-                    </vs-col>
-
-                </vs-row>
-
-                <vs-alert active="true" color="success" style="text-align: justify;" class="mb-3">
-                    Adjuntar recepción original, que incluya al menos una identifiación del responsable de recepción
-                </vs-alert>
-
-                <vs-row>
-                    <vs-col vs-w="12" class="p-4 sm:p-2">
-                        <vs-textarea 
-                            counter="250" 
-                            label="Observación" 
-                            maxlength="250" 
-                            name="Observación" 
-                            v-validate="'max:250'"
-                            v-model="form.observacion" />
-                        <span class="text-danger text-sm" v-show="errors.has('Observación')">{{ errors.first('Observación') }}</span>
-                    </vs-col>
-                </vs-row>
-
-
-            </vx-card>
-
-            <vs-button type="filled" @click.prevent="submitForm" class="mt-5 block">Guardar</vs-button>
-        </div> -->
     </div>
 </template>
 
@@ -394,26 +185,71 @@ export default {
             monto_total: '',
             proveedor: '',
         },
-        options: [{
-          value: '1', // id
-          label: 'Guía de Despacho'
-        }, {
-          value: '2',
-          label: 'Cedible'
-        }]
+        options: [
+            {
+            value: '1', // id
+            label: 'Guía de Despacho'
+            }, {
+            value: '2',
+            label: 'Cedible'
+            }
+        ],
+        fileList: [
+            {name: 'recepción_timbrada.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
+            {name: 'copia_dte.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+        ],
+
+        rules: {
+            fecha_documento: [
+                { type: 'date', required: true, message: 'Ingrese una fecha', trigger: 'change' }
+            ],
+            tipo_documento: [
+                { required: true, message: 'Debe seleccionar uno', trigger:'change' }
+            ],
+            numero_documento: [
+                { required: true, message: 'Ingrese el número del documento', trigger:'blur' },
+                { type: 'number', message: 'Debe ser un número', trigger:'blur' }
+            ],
+            orden_de_compra: [
+                { required: true, message: 'Ingrese la orden de compra del documento', trigger:'blur' },
+            ],
+            monto_total: [
+                { required: true, message: 'Ingrese el monto del documento', trigger:'blur' },
+                { type: 'number', message: 'Debe ser un número', trigger:'blur' }
+            ],
+        }
     }
   },
   methods: {
-    submitForm() {
+    submitForm(formName) {
 
-        this.$validator.validateAll().then(result => {
-        if(result) {
-          // if form have no errors
-          alert("formulario enviado!");
-        }else{
-          // form have errors
-        }
-      });
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+        // this.$validator.validateAll().then(result => {
+        //     if(result) {
+        //         // if form have no errors
+        //         alert("formulario enviado!");
+        //     }else{
+        //         // form have errors
+        //     }
+        // });
+
+    },
+    handleRemove(file, fileList) {
+        console.log(file, fileList);
+    },
+    handlePreview(file) {
+        console.log(file);
+    },
+    handleExceed(files, fileList) {
+        this.$message.warning(`El límite es 3, haz seleccionado ${files.length} archivos esta vez, añade hasta ${files.length + fileList.length}`);
     }
   },
   mounted() {
@@ -422,7 +258,7 @@ export default {
     console.log(this.form.fecha_documento);
     console.log( new Date().toISOString().slice(0,10) );
       
-  }
+  },
 }
 
 </script>
