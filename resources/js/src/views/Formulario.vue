@@ -45,7 +45,7 @@
 
                             <el-col :span="6">
                                 <el-form-item label="N° Documento" prop="numero_documento">
-                                    <el-input v-model="form.numero_documento" ></el-input>
+                                    <el-input v-model.number="form.numero_documento" ></el-input>
                                 </el-form-item>
                             </el-col>
 
@@ -57,7 +57,7 @@
 
                             <el-col :span="6">
                                 <el-form-item label="Monto Total" prop="monto_total">
-                                    <el-input v-model="form.monto_total" placeholder="IVA incluido"  ></el-input>
+                                    <el-input v-model="form.monto_total" placeholder="IVA incluido" @input="formatNumber" ></el-input>
                                 </el-form-item>
                             </el-col>
 
@@ -79,7 +79,7 @@
 
                         <el-row >
                             <el-col :span="12">
-                                <el-form-item label="Fecha Recepción">
+                                <el-form-item label="Fecha Recepción" prop="fecha_recepcion">
                                     <el-date-picker 
                                         type="date" 
                                         v-model="form.fecha_recepcion" 
@@ -94,13 +94,13 @@
 
                         <el-row >
                             <el-col :span="24">
-                                <el-form-item label="Centro de Salud">
-                                    <el-select v-model="form.centro_salud" placeholder="Por favor seleccione" style="width: 100%;">
+                                <el-form-item label="Centro de Salud" prop="centro_de_salud">
+                                    <el-select v-model="centroSaludIndex" placeholder="Por favor seleccione" @change="selectCentroSalud" style="width: 100%;">
                                         <el-option
-                                            v-for="item in options"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value" >
+                                            v-for="(centro, index) in centrosSalud"
+                                            :key="centro.value"
+                                            :label="centro.label"
+                                            :value="index" >
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -109,13 +109,13 @@
 
                         <el-row >
                             <el-col :span="24">
-                                <el-form-item label="Responsable Recepción">
+                                <el-form-item label="Responsable Recepción" prop="responsable_recepcion" v-if="responsablesRecepcion.length">
                                     <el-select v-model="form.responsable_recepcion" placeholder="Por favor seleccione" style="width: 100%;" >
                                         <el-option
-                                            v-for="item in options"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
+                                            v-for="responsable in responsablesRecepcion"
+                                            :key="responsable.value"
+                                            :label="responsable.label"
+                                            :value="responsable.value">
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -160,7 +160,7 @@
                 </el-col>
 
                 <el-col :span="8">
-                    <el-form-item class="mt-4" >
+                    <el-form-item class="mt-5" >
                         <el-button type="primary" @click.prevent="submitForm('form')" ><i class="el-icon-s-claim"></i> Guardar</el-button>
                     </el-form-item>
                 </el-col>
@@ -177,23 +177,72 @@ export default {
   data () {
     return {
         form: {
+            fecha_documento: '',
+            proveedor: '',
             tipo_documento: '',
             numero_documento: '',
-            fecha_documento: new Date().toISOString().slice(0,10),
-            fecha_recepcion: '',
             orden_de_compra: '',
             monto_total: '',
-            proveedor: '',
+            observacion: '',
+
+            fecha_recepcion: '',
+            centro_de_salud: '',
+            responsable_recepcion: '',
         },
+
         options: [
             {
-            value: '1', // id
-            label: 'Guía de Despacho'
+                value: '1', // id
+                label: 'Guía de Despacho'
             }, {
-            value: '2',
-            label: 'Cedible'
+                value: '2',
+                label: 'Cedible'
             }
         ],
+
+        centrosSalud: [
+            {
+                value: '1',
+                label: 'Cerro Navia',
+                responsablesRecepcion: [
+                    {
+                        value: '1',
+                        label: 'Alberto Fuenzalida',
+                        centro_salud: '1'
+                    },
+                    {
+                        value: '3',
+                        label: 'Teresa Perez',
+                        centro_salud: '1'
+                    },
+                    {
+                        value: '4',
+                        label: 'Carlos Gonzalez',
+                        centro_salud: '1'
+                    },
+                ]
+            },
+            {
+                value: '2',
+                label: 'Quilicura',
+                responsablesRecepcion: [
+                    {
+                        value: '6',
+                        label: 'Juan Gomez',
+                        centro_salud: '2'
+                    },
+                    {
+                        value: '7',
+                        label: 'Jaime Vidal',
+                        centro_salud: '2'
+                    },
+                ]
+            }
+        ],
+
+        centroSaludIndex: '',
+        responsablesRecepcion: [],
+
         fileList: [
             {name: 'recepción_timbrada.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
             {name: 'copia_dte.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
@@ -203,6 +252,7 @@ export default {
             fecha_documento: [
                 { type: 'date', required: true, message: 'Ingrese una fecha', trigger: 'change' }
             ],
+
             tipo_documento: [
                 { required: true, message: 'Debe seleccionar uno', trigger:'change' }
             ],
@@ -215,12 +265,26 @@ export default {
             ],
             monto_total: [
                 { required: true, message: 'Ingrese el monto del documento', trigger:'blur' },
-                { type: 'number', message: 'Debe ser un número', trigger:'blur' }
+                // { type: 'number', message: 'Debe ser un número', trigger:'blur' }
+            ],
+            fecha_recepcion: [
+                { type: 'date', required: true, message: 'Ingrese una fecha', trigger: 'change' }
+            ],
+            centro_de_salud: [
+                { required: true, message: 'Debe seleccionar uno', trigger:'change' }
+            ],
+            responsable_recepcion: [
+                { required: true, message: 'Debe seleccionar uno', trigger:'change' }
             ],
         }
     }
   },
   methods: {
+    selectCentroSalud() {
+        this.form.responsable_recepcion = '';
+        this.form.centro_de_salud = this.centrosSalud[this.centroSaludIndex].value;
+        this.responsablesRecepcion = this.centrosSalud[this.centroSaludIndex].responsablesRecepcion;
+    },
     submitForm(formName) {
 
           this.$refs[formName].validate((valid) => {
@@ -232,15 +296,6 @@ export default {
           }
         });
 
-        // this.$validator.validateAll().then(result => {
-        //     if(result) {
-        //         // if form have no errors
-        //         alert("formulario enviado!");
-        //     }else{
-        //         // form have errors
-        //     }
-        // });
-
     },
     handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -250,15 +305,32 @@ export default {
     },
     handleExceed(files, fileList) {
         this.$message.warning(`El límite es 3, haz seleccionado ${files.length} archivos esta vez, añade hasta ${files.length + fileList.length}`);
+    },
+    formatNumber() {
+        
+        let number = this.form.monto_total != '' ? this.form.monto_total.replace(/\./g, '').replace(/[^\d\.]*/g, '') : 0;
+        
+        if ( ! isNaN(number) ){
+			number = number || 0;
+			let places = ! isNaN(places = Math.abs(places)) ? places : 0;
+			let symbol = symbol !== undefined ? symbol : "";
+			let thousand = thousand || ".";
+			let decimal = decimal || ",";
+			let negative = number < 0 ? "-" : "";
+			let i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "";
+			let j = (j = i.length) > 3 ? j % 3 : 0;
+			this.form.monto_total = symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+        } 
+        // else {
+        //     // No sirve el else, porque siempre será un numero 
+		// 	// toastr["warning"]("Solo se permiten numeros");
+        //     // toastr.warning("Solo se permiten números", "Atención", optionsToastr);
+            
+        //     number = number.replace(/[^\d\.]*/g, '');
+		// 	this.form.monto_total = this.formatNumber(number);
+        // }
     }
-  },
-  mounted() {
-      
-    console.log('fecha');
-    console.log(this.form.fecha_documento);
-    console.log( new Date().toISOString().slice(0,10) );
-      
-  },
+  }
 }
 
 </script>
