@@ -141,6 +141,7 @@
                                 <el-upload
                                     class="upload-demo"
                                     action="/test"
+                                    :on-change="handleChange"
                                     :auto-upload="false"
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
@@ -188,6 +189,7 @@ export default {
             fecha_recepcion: '',
             centro_de_salud: '',
             responsable_recepcion: '',
+            archivos: []
         },
 
         options: [
@@ -244,8 +246,8 @@ export default {
         responsablesRecepcion: [],
 
         fileList: [
-            {name: 'recepción_timbrada.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
-            {name: 'copia_dte.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+            // {name: 'recepción_timbrada.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
+            // {name: 'copia_dte.pdf', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
         ],
 
         rules: {
@@ -287,15 +289,46 @@ export default {
     },
     submitForm(formName) {
 
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
+        this.$refs[formName].validate((valid) => {
+
+            if (valid) {
+
+                if ( this.fileList.length === 0 ) {
+                    this.$message({
+                        dangerouslyUseHTMLString: true,
+                        message: '<strong>Debe adjuntar al menos un archivo.</strong>',
+                        type: 'error',
+                        offset: 82
+                    });
+                    return false;
+                }
+
+                if ( this.form.monto_total == 0 ) {
+                    
+                    this.$message({
+                        dangerouslyUseHTMLString: true,
+                        message: '<strong>Debe ingresar un Monto Total mayor a 0</strong>',
+                        type: 'error',
+                        offset: 82
+                    });
+                    return false;
+                }
+
+                alert('submit!');
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+
         });
 
+    },
+    handleChange(file, fileList) {
+        console.log('handleChange')
+        console.log(file);
+        console.log(fileList);
+        this.fileList = fileList.slice(-3);
+        console.log(fileList);
     },
     handleRemove(file, fileList) {
         console.log(file, fileList);
