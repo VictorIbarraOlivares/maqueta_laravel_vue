@@ -1,12 +1,14 @@
 <template>
     <div>
-        <h4>Formulario</h4>
+        <!-- <h4>Formulario</h4> -->
         <el-form ref="form" :model="form" label-position="top" :rules="rules">
             <el-row :gutter="20">
 
                 <el-col :span="16">
-                    <el-card class="mt-4" >
-
+                    <el-card >
+                        <div slot="header" class="clearfix">
+                            <span>Información Documento</span>
+                        </div>
                         <el-row :gutter="20">
                             <el-col :span="6">
                                 <el-form-item label="Fecha Documento" prop="fecha_documento">
@@ -21,9 +23,16 @@
                                 </el-form-item>
                             </el-col>
 
-                            <el-col :span="12">
-                                <el-form-item label="Proveedor">
-                                    <el-input v-model="form.proveedor" ></el-input>
+                            <el-col :span="18">
+                                <el-form-item label="Proveedor" prop="proveedor">
+                                    <el-select v-model="form.proveedor" placeholder="Por favor seleccione" style="width: 100%;">
+                                        <el-option
+                                            v-for="item in user.proveedores"
+                                            :key="item.value"
+                                            :label="item.rut +' '+ item.razon_social"
+                                            :value="item.value">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                             </el-col>
 
@@ -75,8 +84,10 @@
                 </el-col>
 
                 <el-col :span="8">
-                    <el-card class="mt-4" >
-
+                    <el-card >
+                        <div slot="header" class="clearfix">
+                            <span>Información Recepción</span>
+                        </div>
                         <el-row >
                             <el-col :span="12">
                                 <el-form-item label="Fecha Recepción" prop="fecha_recepcion">
@@ -177,6 +188,31 @@
 export default {
   data () {
     return {
+        // user: {
+        //     nombre: 'test@gmail.com',
+        //     proveedores: [
+        //         {
+        //             value: '431',
+        //             rut: '96530470-3',
+        //             razon_social: 'CLÍNICA DÁVILA Y SERVICIOS MÉDICOS S.A.',
+        //         },
+        //         {
+        //             value: '331',
+        //             rut: '96790040-0',
+        //             razon_social: 'CLÍNICA COLONIAL S.A.',
+        //         }
+        //     ],
+        // },
+        user: {
+            nombre: 'test@gmail.com',
+            proveedores: [
+                {
+                    value: '767',
+                    rut: '96885930-7',
+                    razon_social: 'CLÍNICA BICENTENARIO',
+                }
+            ],
+        },
         form: {
             fecha_documento: '',
             proveedor: '',
@@ -254,7 +290,9 @@ export default {
             fecha_documento: [
                 { type: 'date', required: true, message: 'Ingrese una fecha', trigger: 'change' }
             ],
-
+            proveedor: [
+                { required: true, message: 'Debe seleccionar uno', trigger:'change' }
+            ],
             tipo_documento: [
                 { required: true, message: 'Debe seleccionar uno', trigger:'change' }
             ],
@@ -267,7 +305,6 @@ export default {
             ],
             monto_total: [
                 { required: true, message: 'Ingrese el monto del documento', trigger:'blur' },
-                // { type: 'number', message: 'Debe ser un número', trigger:'blur' }
             ],
             fecha_recepcion: [
                 { type: 'date', required: true, message: 'Ingrese una fecha', trigger: 'change' }
@@ -280,6 +317,11 @@ export default {
             ],
         }
     }
+  },
+  mounted() {
+      if ( this.user.proveedores.length === 1 ) {
+          this.form.proveedor = this.user.proveedores[0].value;
+      }
   },
   methods: {
     selectCentroSalud() {
@@ -314,7 +356,13 @@ export default {
                     return false;
                 }
 
-                alert('submit!');
+                // alert('submit!');
+                this.$message({
+                    dangerouslyUseHTMLString: true,
+                    message: '<strong>Formulario enviado !</strong>',
+                    type: 'success',
+                    offset: 82
+                });
             } else {
                 console.log('error submit!!');
                 return false;
