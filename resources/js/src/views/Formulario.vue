@@ -7,21 +7,9 @@
                 <el-col :span="16">
                     <el-card >
                         <div slot="header" class="clearfix">
-                            <span>Información Documento</span>
+                            <span>Antecedentes de la recepción</span>
                         </div>
                         <el-row :gutter="20">
-                            <el-col :span="6">
-                                <el-form-item label="Fecha Documento" prop="fecha_documento">
-                                    <el-date-picker 
-                                        type="date" 
-                                        v-model="form.fecha_documento" 
-                                        :value="form.fecha_documento" 
-                                        format="dd-MM-yyyy"
-                                        style="width: 100%;"
-                                        >
-                                    </el-date-picker>
-                                </el-form-item>
-                            </el-col>
 
                             <el-col :span="18">
                                 <el-form-item label="Proveedor" prop="proveedor">
@@ -33,6 +21,19 @@
                                             :value="item.value">
                                         </el-option>
                                     </el-select>
+                                </el-form-item>
+                            </el-col>
+
+                            <el-col :span="6">
+                                <el-form-item label="Fecha Documento" prop="fecha_documento">
+                                    <el-date-picker 
+                                        type="date" 
+                                        v-model="form.fecha_documento" 
+                                        :value="form.fecha_documento" 
+                                        format="dd-MM-yyyy"
+                                        style="width: 100%;"
+                                        >
+                                    </el-date-picker>
                                 </el-form-item>
                             </el-col>
 
@@ -86,7 +87,7 @@
                 <el-col :span="8">
                     <el-card >
                         <div slot="header" class="clearfix">
-                            <span>Información Recepción</span>
+                            <span>Entidad responsable de recepción</span>
                         </div>
                         <el-row >
                             <el-col :span="12">
@@ -188,31 +189,31 @@
 export default {
   data () {
     return {
-        // user: {
-        //     nombre: 'test@gmail.com',
-        //     proveedores: [
-        //         {
-        //             value: '431',
-        //             rut: '96530470-3',
-        //             razon_social: 'CLÍNICA DÁVILA Y SERVICIOS MÉDICOS S.A.',
-        //         },
-        //         {
-        //             value: '331',
-        //             rut: '96790040-0',
-        //             razon_social: 'CLÍNICA COLONIAL S.A.',
-        //         }
-        //     ],
-        // },
         user: {
             nombre: 'test@gmail.com',
             proveedores: [
                 {
-                    value: '767',
-                    rut: '96885930-7',
-                    razon_social: 'CLÍNICA BICENTENARIO',
+                    value: '431',
+                    rut: '96530470-3',
+                    razon_social: 'CLÍNICA DÁVILA Y SERVICIOS MÉDICOS S.A.',
+                },
+                {
+                    value: '331',
+                    rut: '96790040-0',
+                    razon_social: 'CLÍNICA COLONIAL S.A.',
                 }
             ],
         },
+        // user: {
+        //     nombre: 'test@gmail.com',
+        //     proveedores: [
+        //         {
+        //             value: '767',
+        //             rut: '96885930-7',
+        //             razon_social: 'CLÍNICA BICENTENARIO',
+        //         }
+        //     ],
+        // },
         form: {
             fecha_documento: '',
             proveedor: '',
