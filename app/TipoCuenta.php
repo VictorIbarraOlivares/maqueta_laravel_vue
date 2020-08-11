@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Proveedor;
 use Illuminate\Database\Eloquent\Model;
 
 class TipoCuenta extends Model
@@ -11,4 +12,9 @@ class TipoCuenta extends Model
     protected $fillable = [
         'nombre'
     ];
+
+    public function proveedores()
+    {
+        return $this->hasMany(Proveedor::class, 'tipo_cuenta_id', 'id');
+    }
 }

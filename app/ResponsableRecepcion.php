@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\CentroSalud;
 use Illuminate\Database\Eloquent\Model;
 
 class ResponsableRecepcion extends Model
@@ -16,4 +17,9 @@ class ResponsableRecepcion extends Model
         'fono',
         'email'
     ];
+
+    public function centro_salud()
+    {
+        return $this->belongsTo(CentroSalud::class, 'centro_salud_id');
+    }
 }

@@ -20,6 +20,15 @@ class OrdenCompra extends Model
     const OC_NO_DISPONIBLE = 'no disponible';
 
 
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
+    }
+
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class, 'orden_compra_id', 'id');
+    }
 
     public function estaDisponible()
     {

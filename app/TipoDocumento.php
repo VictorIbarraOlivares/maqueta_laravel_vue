@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Documento;
 use Illuminate\Database\Eloquent\Model;
 
 class TipoDocumento extends Model
@@ -12,4 +13,9 @@ class TipoDocumento extends Model
         'nombre',
         'codigo_dte'
     ];
+
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class, 'tipo_documento_id', 'id');
+    }
 }
