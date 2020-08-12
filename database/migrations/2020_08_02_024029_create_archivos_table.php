@@ -15,7 +15,12 @@ class CreateArchivosTable extends Migration
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('documento_id');
+            $table->string('url');
+            $table->string('nombre');
             $table->timestamps();
+
+            $table->foreign('documento_id')->references('id')->on('documentos');
         });
     }
 

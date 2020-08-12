@@ -15,6 +15,7 @@ class CreateEntidadesFinancierasTable extends Migration
     {
         Schema::create('entidades_financieras', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
             $table->timestamps();
         });
     }

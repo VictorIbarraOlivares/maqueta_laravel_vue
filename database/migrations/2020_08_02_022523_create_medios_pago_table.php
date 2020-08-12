@@ -15,6 +15,7 @@ class CreateMediosPagoTable extends Migration
     {
         Schema::create('medios_pago', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
             $table->timestamps();
         });
     }

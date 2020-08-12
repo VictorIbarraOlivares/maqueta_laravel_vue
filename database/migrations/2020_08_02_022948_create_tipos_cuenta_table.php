@@ -15,6 +15,7 @@ class CreateTiposCuentaTable extends Migration
     {
         Schema::create('tipos_cuenta', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
             $table->timestamps();
         });
     }

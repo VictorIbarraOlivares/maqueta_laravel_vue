@@ -15,6 +15,9 @@ class CreateCentrosSaludTable extends Migration
     {
         Schema::create('centros_salud', function (Blueprint $table) {
             $table->id();
+            $table->string('establecimiento');
+            $table->string('comuna');
+            $table->string('unidad_dependencia');
             $table->timestamps();
         });
     }

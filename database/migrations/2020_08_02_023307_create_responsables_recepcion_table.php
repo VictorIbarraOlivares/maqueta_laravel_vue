@@ -15,7 +15,15 @@ class CreateResponsablesRecepcionTable extends Migration
     {
         Schema::create('responsables_recepcion', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('centro_salud_id');
+            $table->string('nombre');
+            $table->integer('rut')->nullable()->unique();
+            $table->integer('digito_verificador')->nullable();
+            $table->string('fono')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
+
+            $table->foreign('centro_salud_id')->references('id')->on('centros_salud');
         });
     }
 
