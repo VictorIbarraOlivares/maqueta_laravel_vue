@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\User;
+use App\TipoMedioPago;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -26,5 +27,12 @@ $factory->define(User::class, function (Faker $faker) {
         'verificado' => $verificado = $faker->randomElement([ User::USUARIO_VERIFICADO, User::USUARIO_NO_VERIFICADO ]),
         'token_verificacion' => $verificado == User::USUARIO_VERIFICADO ? null : User::generarTokenVerificacion(),
         'admin' => $faker->randomElement([ User::USUARIO_ADMINISTRADOR, User::USUARIO_REPRESENTANTE ]),
+    ];
+});
+
+
+$factory->define(TipoMedioPago::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->name,
     ];
 });
