@@ -2,7 +2,14 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\User;
+use App\Banco;
+use App\Archivo;
+use App\MedioPago;
+use App\TipoCuenta;
+use App\CentroSalud;
+
 use App\TipoMedioPago;
+use App\EntidadFinanciera;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -31,8 +38,77 @@ $factory->define(User::class, function (Faker $faker) {
 });
 
 
+
+
+$factory->define(Proveedor::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+    ];
+});
+
+$factory->define(OrdenCompra::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+    ];
+});
+
+$factory->define(Documento::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+    ];
+});
+
+
+
+/**
+ * Deben ser Seeds
+ */
+$factory->define(TipoDocumento::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->randomElement(['cuenta corriente', 'cuenta rut', 'cuenta vista']),
+    ];
+});
+
 $factory->define(TipoMedioPago::class, function (Faker $faker) {
     return [
-        'nombre' => $faker->name,
+        'nombre' => $faker->word,
+    ];
+});
+
+$factory->define(TipoCuenta::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->randomElement(['cuenta corriente', 'cuenta rut', 'cuenta vista']),
+    ];
+});
+
+$factory->define(Banco::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
+    ];
+});
+
+$factory->define(EntidadFinanciera::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
+    ];
+});
+
+$factory->define(MedioPago::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
+    ];
+});
+
+$factory->define(CentroSalud::class, function (Faker $faker) {
+    return [
+        'establecimiento' => $faker->word,
+        'comuna' => $faker->word,
+        'unidad_dependencia' => $faker->word,
+    ];
+});
+
+$factory->define(ResponsableRecepcion::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
     ];
 });
