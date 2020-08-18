@@ -17,7 +17,6 @@ class CreateCentrosSaludTable extends Migration
             $table->id();
             $table->string('establecimiento');
             $table->string('comuna');
-            $table->string('unidad_dependencia');
             $table->timestamps();
         });
     }

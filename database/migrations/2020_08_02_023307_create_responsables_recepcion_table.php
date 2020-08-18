@@ -19,6 +19,7 @@ class CreateResponsablesRecepcionTable extends Migration
             $table->string('nombre');
             $table->integer('rut')->nullable()->unique();
             $table->integer('digito_verificador')->nullable();
+            $table->integer('unidad_dependencia')->nullable();
             $table->string('fono')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();

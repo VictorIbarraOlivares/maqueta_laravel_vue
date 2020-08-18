@@ -13,7 +13,6 @@ class CentroSalud extends Model
     protected $fillable = [
         'establecimiento',
         'comuna',
-        'unidad_dependencia'
     ];
 
     public function documentos()

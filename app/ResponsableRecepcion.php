@@ -14,6 +14,7 @@ class ResponsableRecepcion extends Model
         'nombre',
         'rut',
         'digito_verificador',
+        'unidad_dependencia',
         'fono',
         'email'
     ];

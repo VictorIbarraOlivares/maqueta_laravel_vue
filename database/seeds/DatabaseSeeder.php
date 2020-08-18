@@ -16,54 +16,20 @@ class DatabaseSeeder extends Seeder
         /**
          * Deben ser Seeds
          */
-        // $factory->define(TipoDocumento::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->randomElement(['cuenta corriente', 'cuenta rut', 'cuenta vista']),
-        //     ];
-        // });
+        $this->call(TipoDocumentoSeeder::class);
 
-        // $factory->define(TipoMedioPago::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->word,
-        //     ];
-        // });
+        $this->call(TipoMedioPagoSeeder::class);
 
-        // $factory->define(TipoCuenta::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->randomElement(['cuenta corriente', 'cuenta rut', 'cuenta vista']),
-        //     ];
-        // });
+        $this->call(TipoCuentaSeeder::class);
 
-        // $factory->define(Banco::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
-        //     ];
-        // });
+        $this->call(BancoSeeder::class);
 
-        // $factory->define(EntidadFinanciera::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
-        //     ];
-        // });
+        $this->call(EntidadFinancieraSeeder::class);
 
-        // $factory->define(MedioPago::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->randomElement(['banco bci', 'banco de chile', 'scotiabank', 'santander', 'banco falabella']),
-        //     ];
-        // });
+        $this->call(MedioPagoSeeder::class);
 
-        // $factory->define(CentroSalud::class, function (Faker $faker) {
-        //     return [
-        //         'establecimiento' => $faker->word,
-        //         'comuna' => $faker->word,
-        //         'unidad_dependencia' => $faker->word,
-        //     ];
-        // });
+        $this->call(CentroSaludSeeder::class);
 
-        // $factory->define(ResponsableRecepcion::class, function (Faker $faker) {
-        //     return [
-        //         'nombre' => $faker->word,
-        //     ];
-        // });
+        $this->call(ResponsableRecepcionSeeder::class);
     }
 }
