@@ -1,15 +1,17 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\User;
-use App\Banco;
-use App\Archivo;
+
+use App\Proveedor;
+use App\Documento;
 use App\MedioPago;
 use App\TipoCuenta;
-use App\CentroSalud;
-
+use App\OrdenCompra;
 use App\TipoMedioPago;
 use App\EntidadFinanciera;
+
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -37,27 +39,41 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-
-
-
 $factory->define(Proveedor::class, function (Faker $faker) {
     return [
-        'nombre' => $faker->word,
+        'medio_pago_id' => MedioPago::all()->random()->id,
+        'entidad_financiera_id' => EntidadFinanciera::all()->random()->id,
+        'tipo_medio_pago_id' => TipoMedioPago::all()->random()->id,
+        'tipo_cuenta_id' => TipoCuenta::all()->random()->id,
+        'banco_id' => Banco::all()->random()->id,
+        'razon_social' => $faker->name,
+        'rut' => $faker->numberBetween(10000000, 19000000),
+        'digito_verificador' => $faker->numberBetween(0,9)
     ];
 });
 
 $factory->define(OrdenCompra::class, function (Faker $faker) {
+    $monto = $faker->numberBetween(1, 10000000);
     return [
-        'nombre' => $faker->word,
+        'proveedor_id' => Proveedor::all()->random()->id,
+        'numero' => $faker->word, // Arreglar formato
+        'monto' => $monto,
+        'saldo' => $monto
+        // 'estado' Arreglar en el documento factory
     ];
 });
 
 $factory->define(Documento::class, function (Faker $faker) {
+    /**
+     * Obtener proveedor con al menos una orden de compra
+     */
     return [
         'nombre' => $faker->word,
     ];
 });
-
+/**
+ * Faltan los archivos
+ */
 
 
 
