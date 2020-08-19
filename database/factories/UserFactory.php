@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
+use App\Banco;
 use App\Archivo;
 use App\Proveedor;
 use App\Documento;
@@ -13,7 +14,9 @@ use App\CentroSalud;
 use App\TipoMedioPago;
 use App\TipoDocumento;
 use App\EntidadFinanciera;
+use App\ResponsableRecepcion;
 
+use Illuminate\Database\Eloquent\Builder;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -30,7 +33,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'nombre' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -56,8 +59,10 @@ $factory->define(Proveedor::class, function (Faker $faker) {
 
 $factory->define(OrdenCompra::class, function (Faker $faker) {
     $monto = $faker->numberBetween(1000, 10000000);
+    $proveedor = Proveedor::doesntHave('ordenes_compra')->get()->random();
+   
     return [
-        'proveedor_id' => Proveedor::all()->random()->id,
+        'proveedor_id' => $proveedor->id,
         'numero' => '1641-'. $faker->numberBetween(600, 2000) .'-SE20', 
         'monto' => $monto,
         'saldo' => $monto
@@ -71,11 +76,11 @@ $factory->define(Documento::class, function (Faker $faker) {
      */
     $proveedor = Proveedor::whereHas('ordenes_compra', function ($query){
         $query->where('estado', OrdenCompra::OC_DISPONIBLE);
-    })->radmon();
+    })->get()->random();
 
     $oc = OrdenCompra::where('proveedor_id', $proveedor->id)
                      ->where('estado', OrdenCompra::OC_DISPONIBLE)
-                     ->random();
+                     ->get()->random();
 
     $consumeTotalOc = $faker->randomElement(['SI', 'NO']);
     $montoDocumento = 0;
@@ -92,7 +97,7 @@ $factory->define(Documento::class, function (Faker $faker) {
     }
 
     $centroSalud = CentroSalud::all()->random();
-    $responsableRecepcion = ResponsableRecepcion::where('centro_salud_id', $centroSalud->id)->random();
+    $responsableRecepcion = ResponsableRecepcion::where('centro_salud_id', $centroSalud->id)->get()->random();
 
     $fechaActual = date('Y-m-d');
     return [
@@ -111,9 +116,9 @@ $factory->define(Documento::class, function (Faker $faker) {
 
 $factory->define(Archivo::class, function (Faker $faker) {
     return [
-        'documento_id' => Documento::doesntHave('archivos')->random()->id,
+        'documento_id' => Documento::doesntHave('archivos')->get()->random()->id,
         'url' => $faker->randomElement(['uno.pdf', 'dos.pdf', 'tres.pdf']),
-        'nombre' => $faker_word,
+        'nombre' => $faker->word,
     ];
 });
 

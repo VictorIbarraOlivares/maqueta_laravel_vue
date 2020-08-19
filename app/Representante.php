@@ -10,7 +10,7 @@ class Representante extends User
 
     public function proveedores()
     {
-        return $this->belongsToMany(Proveedor::class, 'representante_proveedor', 'representante_id', 'proveedor_id');
+        return $this->belongsToMany(Proveedor::class, 'proveedor_representante', 'representante_id', 'proveedor_id');
     }
 
 }

@@ -34,7 +34,7 @@ class Proveedor extends Model
 
     public function representantes()
     {
-        return $this->belongsToMany(Representante::class, 'representante_proveedor', 'proveedor_id', 'representante_id');
+        return $this->belongsToMany(Representante::class, 'proveedor_representante', 'proveedor_id', 'representante_id');
     }
 
     public function documentos()
